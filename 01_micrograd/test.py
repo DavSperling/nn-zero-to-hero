@@ -145,6 +145,32 @@ def test_mlp():
     print(f"  out.data = {out.data:.4f}")
     print(f"  nb params = {len(params)}")
     print(f"  exemple de grad sur premier param: {params[0].grad:.4f}")
+    
+def test_operators():
+    a = Value(3.0)
+    
+    # Soustraction Value - Value
+    b = Value(1.0)
+    c = a - b
+    assert c.data == 2.0
+    
+    # Soustraction Value - nombre
+    d = a - 1.0
+    assert d.data == 2.0
+    
+    # Négation
+    e = -a
+    assert e.data == -3.0
+    
+    # Sum sur liste de Values (utilise __radd__)
+    s = sum([Value(1.0), Value(2.0), Value(3.0)])
+    assert s.data == 6.0
+    
+    # Multiplication Value * nombre
+    f = a * 2
+    assert f.data == 6.0
+    
+    print("✓ test_operators passed")
 
 
 if __name__ == "__main__":
@@ -155,4 +181,5 @@ if __name__ == "__main__":
     test_neuron()
     test_layer()
     test_mlp()
+    test_operators()
     

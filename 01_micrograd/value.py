@@ -7,6 +7,7 @@ class Value:
         self._backward = lambda: None
 
     def __add__(self, other):
+        other = other if isinstance(other, Value) else Value(other)
         out = Value(
             data=self.data + other.data,
             _children=(self, other),
@@ -21,6 +22,7 @@ class Value:
         return out
 
     def __mul__(self, other):
+        other = other if isinstance(other, Value) else Value(other)
         out = Value(
             data=self.data * other.data,
             _children=(self, other),
@@ -87,6 +89,20 @@ class Value:
             self.grad += out.data * out.grad 
         out._backward = _backward
         return out
+    
+    def __neg__(self):
+        """Permet d'écrire -self (négatif)"""
+        return self * -1
+
+    def __sub__(self, other):
+        """Permet d'écrire self - other"""
+        return self + (-other)
+
+    def __radd__(self, other):
+        """Permet d'écrire other + self quand other est un nombre.
+        Indispensable pour que sum([Value, Value, ...]) fonctionne,
+        car sum() démarre avec 0 (un int) et fait 0 + Value en premier."""
+        return self + other
     
 
 
