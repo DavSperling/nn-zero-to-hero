@@ -18,7 +18,7 @@ mlp = MLP( 3, [4 , 4 , 1])
 # ───── TRAINING LOOP ─────
 
 learning_rate = 0.05
-n_epochs = 50
+n_epochs = 10
 
 for epoch in range(n_epochs):
     # 1. FORWARD PASS
@@ -42,9 +42,17 @@ for epoch in range(n_epochs):
     if epoch % 5 == 0 or epoch == n_epochs - 1:
         print(f"Epoch {epoch:3d} : loss = {loss.data:.6f}")
 
-# ───── PRÉDICTIONS FINALES ─────
+
+# ──── PRÉDICTIONS FINALES ────
 
 print("\n=== Après entraînement ===")
 ypreds_final = [mlp(x) for x in xs]
 for i, (yp, yt) in enumerate(zip(ypreds_final, ys)):
     print(f"Exemple {i}: prédit = {yp.data:+.4f}, attendu = {yt:+.1f}")
+
+
+test = [Value(0.5), Value(1.0), Value(1.0)]
+prediction = mlp(test)
+
+print(f"Entrée     : {[v.data for v in test]}")
+print(f"Prédiction : {prediction.data:+.4f}") 
