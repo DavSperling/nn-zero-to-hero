@@ -34,6 +34,32 @@ def test_pow():
     print(f"  a.grad = {a.grad}")
 
 
+def test_tanh():
+    a = Value(0.5)
+    b = a.tanh()
+    b.backward()
+    # tanh(0.5) ≈ 0.4621, et 1 - 0.4621² ≈ 0.7864
+    assert abs(b.data - 0.4621) < 0.001, f"b.data = {b.data}"
+    assert abs(a.grad - 0.7864) < 0.001, f"a.grad = {a.grad}"
+    print("✓ test_tanh passed")
+    print(f"  b.data = {b.data:.4f}")
+    print(f"  a.grad = {a.grad:.4f}")
+
+
+def test_exp():
+    a = Value(1.0)
+    b = a.exp()
+    b.backward()
+    # exp(1) ≈ 2.7183, dérivée = exp(1) ≈ 2.7183
+    assert abs(b.data - 2.7183) < 0.001, f"b.data = {b.data}"
+    assert abs(a.grad - 2.7183) < 0.001, f"a.grad = {a.grad}"
+    print("✓ test_exp passed")
+    print(f"  b.data = {b.data:.4f}")
+    print(f"  a.grad = {a.grad:.4f}")
+
+
 if __name__ == "__main__":
     test_add_and_mul()
     test_pow()
+    test_tanh()
+    test_exp()
